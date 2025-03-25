@@ -1,38 +1,97 @@
 # Chatwerk
 
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/chatwerk`. To experiment with that code, run `bin/console` for an interactive prompt.
+Chatwerk provides AI tool integration for the [QueryPackwerk](https://github.com/rubyatscale/query_packwerk) gem. It adds a Model Context Protocol (MCP) server that allows AI tools like Cursor IDE to access information about your Packwerk packages, dependencies, and violations.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Install the gem and add to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
-
-```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```ruby
+gem 'chatwerk', group: :development
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+And then execute:
 
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+$ bundle install
+```
+
+Or install it yourself:
+
+```bash
+$ gem install chatwerk
 ```
 
 ## Usage
 
-TODO: Write usage instructions here
+### Starting the MCP Server
+
+Start the MCP server in your Rails application directory:
+
+```bash
+$ chatwerk_mcp
+```
+
+By default, the server runs on port 7531. You can specify a different port:
+
+```bash
+$ chatwerk_mcp --port=9000
+```
+
+### Connecting with Cursor IDE
+
+To use Chatwerk with Cursor:
+
+1. Start the MCP server in your project directory:
+   ```bash
+   cd /your/rails/project
+   chatwerk_mcp
+   ```
+
+2. In Cursor, open Settings > Extensions > Model Context Providers.
+
+3. Add a new MCP connection with the URL: `http://localhost:7531/mcp/context`
+
+4. Now you can ask Cursor questions about your Packwerk structure!
+
+### Example Queries for Cursor
+
+Once connected, you can ask Cursor questions about your Packwerk structure:
+
+- "What are all the packages in this codebase?"
+- "Tell me about the dependencies of package X"
+- "What packages depend on package Y?"
+- "Show me all the violations for package Z"
+- "How difficult would it be to separate package X from its dependencies?"
+- "What code patterns are used to access package Y?"
+
+## API Reference
+
+Chatwerk provides a structured API for accessing Packwerk information. This API powers the MCP server but can also be used directly in your Ruby code:
+
+```ruby
+require 'chatwerk'
+
+# Get detailed information about a package
+Chatwerk::API.package_info('packs/my_package')
+
+# Get dependencies of a package
+Chatwerk::API.package_dependencies('packs/my_package')
+
+# Find usage locations of a package
+Chatwerk::API.find_usage_locations('packs/my_package')
+
+# Assess difficulty of separating a package
+Chatwerk::API.assess_separation_difficulty('packs/my_package')
+```
 
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/martinemde/chatwerk.
+Bug reports and pull requests are welcome on GitHub at https://github.com/rubyatscale/chatwerk.
 
 ## License
 

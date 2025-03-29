@@ -14,6 +14,12 @@ module Chatwerk
       MCP::Server.new(Chatwerk::Mcp.new).serve(MCP::Server::StdioClientConnection.new)
     end
 
+    desc 'inspect [WORKING_DIRECTORY]', 'Run the MCP inspector with an optional working directory path (defaults to current directory)'
+    def inspect(working_directory = nil)
+      pwd = working_directory || Dir.pwd
+      system("npx @modelcontextprotocol/inspector -e PWD=#{pwd} bundle exec exe/chatwerk mcp")
+    end
+
     desc 'version', 'Display Chatwerk version'
     def version
       puts "Chatwerk #{Chatwerk::VERSION}"

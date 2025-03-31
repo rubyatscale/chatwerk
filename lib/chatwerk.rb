@@ -11,11 +11,11 @@ module Chatwerk
 
   autoload :API, 'chatwerk/api'
   autoload :CLI, 'chatwerk/cli'
+  autoload :Error, 'chatwerk/error'
   autoload :Helpers, 'chatwerk/helpers'
   autoload :Mcp, 'chatwerk/mcp'
   autoload :Views, 'chatwerk/views'
   autoload :VERSION, 'chatwerk/version'
 
-  class Error < StandardError; end
   class NotFoundError < Error; end
 end

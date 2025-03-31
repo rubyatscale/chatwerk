@@ -7,9 +7,7 @@ RSpec.describe Chatwerk::Views::NoViolationsView do
 
     expect(described_class.render(package:, constant_name:)).to eq(<<~MESSAGE)
       No violations found in "orders" for "::Orders::Order".
-      Ensure that constant_name is given in the format of:
-        "::ConstantName"
-        "::ConstantName::NestedConstant"
+      Ensure that constant_name is given in the format of "::ConstantName" or "::ConstantName::NestedConstant".
     MESSAGE
   end
 end

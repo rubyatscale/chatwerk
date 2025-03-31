@@ -7,7 +7,7 @@ module Chatwerk
         if has_packwerk_yml
           <<~MESSAGE
             0 packages found.
-            `packwerk.yml` file exists in project root: #{Dir.pwd}
+            `packwerk.yml` file exists in project root: #{Chatwerk::Helpers.pwd}
 
             * Check that the project root is correct.
             * Make sure that packwerk is initialized correctly.
@@ -16,7 +16,7 @@ module Chatwerk
         else
           <<~MESSAGE
             This project does not appear to be using packwerk.
-            `packwerk.yml` file does not exist in project root: #{Dir.pwd}
+            `packwerk.yml` file does not exist in project root: #{Chatwerk::Helpers.pwd}
 
             * Check that the project root is correct.
             * Check to make sure that packwerk is installed and initialized correctly.

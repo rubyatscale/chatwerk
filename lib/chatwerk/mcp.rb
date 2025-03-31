@@ -3,6 +3,7 @@ require 'query_packwerk'
 require 'parse_packwerk'
 require 'yaml'
 require_relative 'views'
+require_relative 'api'
 
 module Chatwerk
   class Mcp < MCP::App
@@ -23,8 +24,8 @@ module Chatwerk
           Current Directory: #{Dir.pwd}
           Environment: #{ENV.fetch('PWD', nil)}
         MESSAGE
-        Dir.chdir(ENV.fetch('PWD', nil)) do
-          msg << "Chdir'd to #{Dir.pwd}\n"
+        Helpers.chdir do
+          msg << "Chdir'd to #{Helpers.pwd}\n"
         end
         msg << ENV.to_h.map { |key, value| "#{key}=#{value}" }.join("\n")
       end
@@ -32,24 +33,13 @@ module Chatwerk
 
     tool 'packages' do
       description <<~DESC
-        List all valid packwerk packages in the project, optionally matching a substring of the package_path.
-
-        Output format:
-        - List of all matching package paths.
+        List all valid packwerk packages (aka packs) in the project.
+        Use this to find or list packages, optionally matching a substring of the package_path.
       DESC
-      argument :package_path, String, required: false, description: "A full relative package path or substring (e.g. 'packs/product_services/payments/banks' or 'payments/banks')."
+      argument :package_path, String, required: false, description: "A partial package path name to constrain the results (e.g. 'packs/product_services/payments/banks' or 'payments/banks')."
       call do |args|
-        Dir.chdir(ENV.fetch('PWD', nil))
-        packages = Helpers.all_packages(args[:package_path])
-
-        if packages.empty?
-          has_packwerk_yml = File.exist?('packwerk.yml')
-          Views::NoPackagesView.render(has_packwerk_yml:)
-        else
-          Views::PackagesView.render(packages:, has_packwerk_yml:)
-        end
-      rescue StandardError => e
-        raise Views::ErrorView.render(package_path: args[:package_path], error: e)
+        Helpers.chdir
+        API.packages(package_path: args[:package_path])
       end
     end
 
@@ -62,12 +52,8 @@ module Chatwerk
       DESC
       argument :package_path, String, required: true, description: "A full relative package path (e.g. 'packs/product_services/payments/banks')."
       call do |args|
-        Dir.chdir(ENV.fetch('PWD', nil))
-        package = Helpers.find_package(args[:package_path])
-
-        Views::PackageView.render(package:)
-      rescue StandardError => e
-        raise Views::ErrorView.render(package_path: args[:package_path], error: e)
+        Helpers.chdir
+        API.package(package_path: args[:package_path])
       end
     end
 
@@ -88,23 +74,8 @@ module Chatwerk
       argument :package_path, String, required: true, description: "The relative path of a directory containing a package.yml file (e.g. 'packs/product_services/payments/origination_banks')."
       argument :constant_name, String, required: false, description: "The name of a constant to filter the results by. If provided, a more detailed list of code usage examples will be returned. (e.g. '::OtherPackage::SomeClass')"
       call do |args|
-        Dir.chdir(ENV.fetch('PWD', nil))
-        package = Helpers.find_package(args[:package_path])
-        constant_name = Helpers.normalize_constant_name(args[:constant_name])
-        violations = package.todos
-
-        if constant_name.empty?
-          Views::ViolationsListView.render(package:, violations:)
-        else
-          constant_violations = violations.anonymous_sources_with_locations.select { |c, _| c.start_with?(constant_name) }
-          if constant_violations.empty?
-            Views::NoViolationsView.render(package:, constant_name:)
-          else
-            Views::ViolationsDetailsView.render(package:, violations: constant_violations)
-          end
-        end
-      rescue StandardError => e
-        raise Views::ErrorView.render(package_path: args[:package_path], args: args, error: e)
+        Helpers.chdir
+        API.package_todos(package_path: args[:package_path], constant_name: args[:constant_name])
       end
     end
 
@@ -126,23 +97,8 @@ module Chatwerk
       argument :package_path, String, required: true, description: "The relative path of a directory containing a package.yml file (e.g. 'packs/product_services/payments/origination_banks'). AKA a 'pack' or 'package'."
       argument :constant_name, String, required: false, description: 'The name of a constant to filter the results by. If provided, a more detailed list of code usage examples will be returned.'
       call do |args|
-        Dir.chdir(ENV.fetch('PWD', nil))
-        package = Helpers.find_package(args[:package_path])
-        constant_name = Helpers.normalize_constant_name(args[:constant_name])
-        violations = package.violations
-
-        if constant_name.empty?
-          Views::ViolationsListView.render(package:, violations:)
-        else
-          constant_violations = violations.anonymous_sources_with_locations.select { |c, _| c.start_with?(constant_name) }
-          if constant_violations.empty?
-            Views::NoViolationsView.render(package:, constant_name:)
-          else
-            Views::ViolationsDetailsView.render(package:, violations: constant_violations)
-          end
-        end
-      rescue StandardError => e
-        raise Chatwerk::Views::ErrorView.render(package_path: args[:package_path], args: args, error: e)
+        Helpers.chdir
+        API.package_violations(package_path: args[:package_path], constant_name: args[:constant_name])
       end
     end
   end

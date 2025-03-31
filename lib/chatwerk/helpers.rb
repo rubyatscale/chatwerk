@@ -1,5 +1,20 @@
 module Chatwerk
   module Helpers
+    def chdir(&)
+      Dir.chdir(env_pwd, &)
+    end
+    module_function :chdir
+
+    def env_pwd
+      ENV.fetch('PWD', pwd)
+    end
+    module_function :env_pwd
+
+    def pwd
+      Dir.pwd
+    end
+    module_function :pwd
+
     def normalize_package_path(package_path)
       package_path = package_path.to_s.strip
       package_path = package_path.delete_prefix('/')
@@ -27,12 +42,17 @@ module Chatwerk
 
     def find_package(path_pattern)
       packages = all_packages(path_pattern)
-      case packages.size
-      when 0
+
+      if packages.empty?
         raise "Unable to find a package for #{path_pattern.inspect}."
-      when 1
+      elsif packages.size == 1
         packages.first
       else
+        # Return an exact match even if it's a subset of another match
+        # e.g. packs/payments and packs/payments_api
+        exact_match = packages.find { |package| package.name == path_pattern }
+        return exact_match if exact_match
+
         raise Chatwerk::Error, <<~ERROR
           Found multiple packages for #{path_pattern.inspect}. Please be more specific.
           #{packages.map(&:name).join("\n")}

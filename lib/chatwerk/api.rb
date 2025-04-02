@@ -14,7 +14,7 @@ module Chatwerk
           has_packwerk_yml = File.exist?('packwerk.yml')
           Views::NoPackagesView.render(has_packwerk_yml:)
         else
-          Views::PackagesView.render(packages:, has_packwerk_yml:)
+          Views::PackagesView.render(packages:)
         end
       rescue StandardError => e
         raise Chatwerk::Error.new(e, package_path:)

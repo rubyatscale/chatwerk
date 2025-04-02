@@ -16,7 +16,7 @@ RSpec.describe Chatwerk::Views::PackageView do
                                 todos: [],
                                 violations: [])
 
-      expect(described_class.render(package:).chomp).to eq(<<~OUTPUT)
+      expect(described_class.render(package:)).to eq(<<~OUTPUT)
         ---
         name: orders
         enforce_dependencies: true
@@ -29,6 +29,7 @@ RSpec.describe Chatwerk::Views::PackageView do
         - consumer1
         todos_count: 0
         violations_count: 0
+
       OUTPUT
     end
   end

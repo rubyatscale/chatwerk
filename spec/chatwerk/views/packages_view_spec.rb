@@ -10,7 +10,7 @@ RSpec.describe Chatwerk::Views::PackagesView do
       ]
       package_path = 'app/packages'
 
-      expect(described_class.render(packages:, package_path:)).to eq(<<~OUTPUT.chomp)
+      expect(described_class.render(packages:, package_path:)).to eq(<<~OUTPUT)
         orders
         payments
         users
@@ -23,7 +23,7 @@ RSpec.describe Chatwerk::Views::PackagesView do
       packages = []
       package_path = 'app/invalid_path'
 
-      expect(described_class.render(packages:, package_path:)).to eq(<<~OUTPUT.chomp)
+      expect(described_class.render(packages:, package_path:)).to eq(<<~OUTPUT)
         No packages found matching "app/invalid_path"
       OUTPUT
     end

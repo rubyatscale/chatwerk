@@ -9,7 +9,7 @@ RSpec.describe Chatwerk::API do
   let(:constant_name) { '::TestPackage::TestClass' }
   let(:package) { instance_double('Packwerk::Package', name: 'packs/test_package') }
   let(:violations) { instance_double('QueryPackwerk::Violations') }
-  let(:anonymous_sources_with_locations) { { '::TestPackage::TestClass' => { 'example usage' => ['app/models/test.rb'] } } }
+  let(:anonymous_sources_with_locations) { { '::TestPackage::TestClass' => { 'example usage' => ['app/models/test.rb:1'] } } }
 
   before do
     allow(Chatwerk::Helpers).to receive(:chdir)
@@ -23,7 +23,7 @@ RSpec.describe Chatwerk::API do
       end
 
       it 'returns the packages view' do
-        expect(described_class.packages).to eq('packs/test_package')
+        expect(described_class.packages).to eq("packs/test_package\n")
       end
 
       it 'accepts an optional package path filter' do
@@ -40,7 +40,7 @@ RSpec.describe Chatwerk::API do
       end
 
       it 'returns the no packages view' do
-        expect(described_class.packages.chomp).to eq(<<~STRING.chomp)
+        expect(described_class.packages).to eq(<<~STRING)
           0 packages found.
           `packwerk.yml` file exists in project root: /test/workspace
 
@@ -98,11 +98,8 @@ RSpec.describe Chatwerk::API do
 
       it 'returns the violations list view' do
         expect(described_class.package_todos(package_path: package_path)).to eq(<<~STRING)
-          The following code violates package boundaries:
-
-          # Constant `::TestPackage::TestClass`
-            example usage
-            - app/models/test.rb
+          app/models/test.rb
+          1:   example usage
         STRING
       end
     end
@@ -110,11 +107,8 @@ RSpec.describe Chatwerk::API do
     context 'with constant name' do
       it 'returns the violations details view' do
         expect(described_class.package_todos(package_path: package_path, constant_name: constant_name)).to eq(<<~STRING)
-          The following code violates package boundaries:
-
-          # Constant `::TestPackage::TestClass`
-            example usage
-            - app/models/test.rb
+          app/models/test.rb
+          1:   example usage
         STRING
       end
 
@@ -123,8 +117,6 @@ RSpec.describe Chatwerk::API do
 
         it 'returns the no violations view' do
           expect(described_class.package_todos(package_path: package_path, constant_name: constant_name).strip).to eq(<<~STRING.strip)
-            The following code violates package boundaries:
-
             No violations found in "packs/test_package" for "::TestPackage::TestClass".
             Ensure that constant_name is given in the format of "::ConstantName" or "::ConstantName::NestedConstant".
           STRING
@@ -157,11 +149,8 @@ RSpec.describe Chatwerk::API do
 
       it 'returns the violations list view' do
         expect(described_class.package_violations(package_path: package_path)).to eq(<<~STRING)
-          The following code violates package boundaries:
-
-          # Constant `::TestPackage::TestClass`
-            example usage
-            - app/models/test.rb
+          app/models/test.rb
+          1:   example usage
         STRING
       end
     end
@@ -169,11 +158,8 @@ RSpec.describe Chatwerk::API do
     context 'with constant name' do
       it 'returns the violations details view' do
         expect(described_class.package_violations(package_path: package_path, constant_name: constant_name)).to eq(<<~STRING)
-          The following code violates package boundaries:
-
-          # Constant `::TestPackage::TestClass`
-            example usage
-            - app/models/test.rb
+          app/models/test.rb
+          1:   example usage
         STRING
       end
 
@@ -181,9 +167,7 @@ RSpec.describe Chatwerk::API do
         let(:anonymous_sources_with_locations) { {} }
 
         it 'returns the no violations view' do
-          expect(described_class.package_violations(package_path: package_path, constant_name: constant_name).strip).to eq(<<~STRING.strip)
-            The following code violates package boundaries:
-
+          expect(described_class.package_violations(package_path: package_path, constant_name: constant_name)).to eq(<<~STRING)
             No violations found in "packs/test_package" for "::TestPackage::TestClass".
             Ensure that constant_name is given in the format of "::ConstantName" or "::ConstantName::NestedConstant".
           STRING

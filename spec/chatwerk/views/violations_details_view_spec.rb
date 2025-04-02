@@ -7,21 +7,22 @@ RSpec.describe Chatwerk::Views::ViolationsDetailsView do
       constant_name = '::Core::User'
       sources = {
         '::Core::User' => {
-          'User.find(order.user_id)' => ['app/packages/orders/app/models/order.rb:45', 'app/packages/orders/app/services/order_service.rb:12'],
-          'User.create(user_params)' => ['app/packages/orders/app/controllers/orders_controller.rb:28']
+          'User.find(_)' => ['app/packages/orders/app/models/order.rb:45', 'app/packages/orders/app/services/order_service.rb:12'],
+          'User.create(_)' => ['app/packages/orders/app/controllers/orders_controller.rb:28', 'app/packages/orders/app/models/order.rb:48']
         }
       }
       violations = instance_double('QueryPackwerk::Violations', anonymous_sources_with_locations: sources)
 
       expect(described_class.render(package:, violations:, constant_name:)).to eq(<<~OUTPUT)
-        The following code violates package boundaries:
+        app/packages/orders/app/controllers/orders_controller.rb
+        28:   User.create(_)
 
-        # Constant `::Core::User`
-          User.find(order.user_id)
-          - app/packages/orders/app/models/order.rb:45
-          - app/packages/orders/app/services/order_service.rb:12
-          User.create(user_params)
-          - app/packages/orders/app/controllers/orders_controller.rb:28
+        app/packages/orders/app/models/order.rb
+        45:   User.find(_)
+        48:   User.create(_)
+
+        app/packages/orders/app/services/order_service.rb
+        12:   User.find(_)
       OUTPUT
     end
   end
@@ -36,10 +37,7 @@ RSpec.describe Chatwerk::Views::ViolationsDetailsView do
       violations = instance_double('QueryPackwerk::Violations', anonymous_sources_with_locations: sources)
 
       expect(described_class.render(package:, violations:, constant_name:)).to eq(<<~OUTPUT)
-        The following code violates package boundaries:
-
-        # Constant `::Core::Product`
-          No usages found.
+        No sources found for ::Core::Product
       OUTPUT
     end
   end

@@ -9,6 +9,7 @@ RSpec.describe Chatwerk::API do
   let(:constant_name) { '::TestPackage::TestClass' }
   let(:package) { instance_double('Packwerk::Package', name: 'packs/test_package') }
   let(:violations) { instance_double('QueryPackwerk::Violations') }
+  let(:anonymous_source_counts) { { '::TestPackage::TestClass' => { 'example usage' => 1, 'another example' => 2 } } }
   let(:anonymous_sources_with_locations) { { '::TestPackage::TestClass' => { 'example usage' => ['app/models/test.rb:1'] } } }
 
   before do
@@ -93,34 +94,31 @@ RSpec.describe Chatwerk::API do
       allow(violations).to receive(:anonymous_sources_with_locations).and_return(anonymous_sources_with_locations)
     end
 
-    context 'without constant name' do
-      let(:constant_name) { '' }
+    it 'returns the violations details view' do
+      expect(described_class.package_todos(package_path: package_path, constant_name: constant_name)).to eq(<<~STRING)
+        app/models/test.rb
+        1:   example usage
+      STRING
+    end
 
-      it 'returns the violations list view' do
-        expect(described_class.package_todos(package_path: package_path)).to eq(<<~STRING)
-          app/models/test.rb
-          1:   example usage
+    context 'when no violations found' do
+      it 'returns the no violations view' do
+        allow(violations).to receive(:anonymous_sources_with_locations).and_return({})
+        expect(described_class.package_todos(package_path: package_path, constant_name: constant_name).strip).to eq(<<~STRING.strip)
+          No violations found in "packs/test_package" for "::TestPackage::TestClass".
+          Ensure that constant_name is given in the format of "::ConstantName" or "::ConstantName::NestedConstant".
         STRING
       end
     end
 
-    context 'with constant name' do
-      it 'returns the violations details view' do
-        expect(described_class.package_todos(package_path: package_path, constant_name: constant_name)).to eq(<<~STRING)
-          app/models/test.rb
-          1:   example usage
+    context 'without constant name' do
+      let(:constant_name) { '' }
+
+      it 'returns the violations list view' do
+        allow(violations).to receive(:anonymous_source_counts).and_return(anonymous_source_counts)
+        expect(described_class.package_todos(package_path: package_path)).to eq(<<~STRING)
+          ::TestPackage::TestClass (3 violations)
         STRING
-      end
-
-      context 'when no violations found' do
-        let(:anonymous_sources_with_locations) { {} }
-
-        it 'returns the no violations view' do
-          expect(described_class.package_todos(package_path: package_path, constant_name: constant_name).strip).to eq(<<~STRING.strip)
-            No violations found in "packs/test_package" for "::TestPackage::TestClass".
-            Ensure that constant_name is given in the format of "::ConstantName" or "::ConstantName::NestedConstant".
-          STRING
-        end
       end
     end
 
@@ -141,37 +139,34 @@ RSpec.describe Chatwerk::API do
     before do
       allow(Chatwerk::Helpers).to receive(:all_packages).and_return([package])
       allow(package).to receive(:violations).and_return(violations)
+    end
+
+    it 'returns the violations details view' do
       allow(violations).to receive(:anonymous_sources_with_locations).and_return(anonymous_sources_with_locations)
+      expect(described_class.package_violations(package_path: package_path, constant_name: constant_name)).to eq(<<~STRING)
+        app/models/test.rb
+        1:   example usage
+      STRING
+    end
+
+    context 'when no violations found' do
+      it 'returns the no violations view' do
+        allow(violations).to receive(:anonymous_sources_with_locations).and_return({})
+        expect(described_class.package_violations(package_path: package_path, constant_name: constant_name)).to eq(<<~STRING)
+          No violations found in "packs/test_package" for "::TestPackage::TestClass".
+          Ensure that constant_name is given in the format of "::ConstantName" or "::ConstantName::NestedConstant".
+        STRING
+      end
     end
 
     context 'without constant name' do
       let(:constant_name) { '' }
 
       it 'returns the violations list view' do
+        allow(violations).to receive(:anonymous_source_counts).and_return(anonymous_source_counts)
         expect(described_class.package_violations(package_path: package_path)).to eq(<<~STRING)
-          app/models/test.rb
-          1:   example usage
+          ::TestPackage::TestClass (3 violations)
         STRING
-      end
-    end
-
-    context 'with constant name' do
-      it 'returns the violations details view' do
-        expect(described_class.package_violations(package_path: package_path, constant_name: constant_name)).to eq(<<~STRING)
-          app/models/test.rb
-          1:   example usage
-        STRING
-      end
-
-      context 'when no violations found' do
-        let(:anonymous_sources_with_locations) { {} }
-
-        it 'returns the no violations view' do
-          expect(described_class.package_violations(package_path: package_path, constant_name: constant_name)).to eq(<<~STRING)
-            No violations found in "packs/test_package" for "::TestPackage::TestClass".
-            Ensure that constant_name is given in the format of "::ConstantName" or "::ConstantName::NestedConstant".
-          STRING
-        end
       end
     end
 

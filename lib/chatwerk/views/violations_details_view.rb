@@ -4,9 +4,7 @@ module Chatwerk
   module Views
     class ViolationsDetailsView < BaseView
       def template(package:, violations:, constant_name:)
-        relevant_violations = violations
-                              .anonymous_sources_with_locations
-                              .select { |c, _| c.start_with?(constant_name) }
+        relevant_violations = violations.anonymous_sources_with_locations.select { |c, _| c.start_with?(constant_name) }
 
         if relevant_violations.empty?
           Views::NoViolationsView.render(package:, constant_name:)

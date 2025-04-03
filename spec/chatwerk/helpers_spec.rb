@@ -48,7 +48,7 @@ RSpec.describe Chatwerk::Helpers do
         'MyConstant' => '::MyConstant',
         '::MyConstant' => '::MyConstant',
         '  MyConstant  ' => '::MyConstant',
-        nil => '::'
+        nil => ''
       }
 
       examples.each do |input, expected|

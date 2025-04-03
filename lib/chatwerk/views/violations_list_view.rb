@@ -3,11 +3,28 @@ require_relative 'base_view'
 module Chatwerk
   module Views
     class ViolationsListView < BaseView
-      def template(violations:)
-        say 'These constants violate package boundaries:'
-        violations.anonymous_source_counts.each do |constant_name, source_counts|
-          count = source_counts.values.sum
-          say "#{constant_name}: #{format_count(count, 'violation')}"
+      # The anonymous_source_counts method returns a hash as follows:
+      # {
+      #   "::Core::User" => {
+      #     "User.find(_)" => 2,
+      #     "User.create(_)" => 1
+      #   }
+      #   "::Core::Product" => {
+      #     "Product.find(_)" => 1,
+      #     "Product.create(_)" => 1
+      #   }
+      # }
+      def template(package:, violations:)
+        sums = violations.anonymous_source_counts.transform_values do |source_counts|
+          source_counts.values.sum
+        end
+
+        if sums.empty?
+          NoViolationsView.render(package:)
+        else
+          sums.sort_by { |_, count| -count }.map do |constant_name, count|
+            "#{constant_name} (#{format_count(count, 'violation')})\n"
+          end.join
         end
       end
     end

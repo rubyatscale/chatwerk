@@ -26,6 +26,8 @@ module Chatwerk
 
     def normalize_constant_name(constant_name)
       constant_name = constant_name.to_s.strip
+      return '' if constant_name.empty?
+
       constant_name.sub(/^(::)?/, '::')
     end
     module_function :normalize_constant_name
@@ -54,8 +56,11 @@ module Chatwerk
         return exact_match if exact_match
 
         raise Chatwerk::Error, <<~ERROR
-          Found multiple packages for #{path_pattern.inspect}. Please be more specific.
+          Found multiple packages for #{path_pattern.inspect}:
+
           #{packages.map(&:name).join("\n")}
+
+          Please use full path to specify the correct package.
         ERROR
       end
     end

@@ -7,7 +7,7 @@ require_relative 'views'
 module Chatwerk
   module API
     class << self
-      def packages(package_path: nil)
+      def packages(package_path: '')
         packages = Helpers.all_packages(package_path)
 
         if packages.empty?
@@ -28,7 +28,7 @@ module Chatwerk
         raise Chatwerk::Error.new(e, package_path:)
       end
 
-      def package_todos(package_path:, constant_name: nil)
+      def package_todos(package_path:, constant_name: '')
         package = Helpers.find_package(package_path)
         constant_name = Helpers.normalize_constant_name(constant_name)
         violations = package.todos
@@ -42,7 +42,7 @@ module Chatwerk
         raise Chatwerk::Error.new(e, package_path:, constant_name:)
       end
 
-      def package_violations(package_path:, constant_name: nil)
+      def package_violations(package_path:, constant_name: '')
         package = Helpers.find_package(package_path)
         constant_name = Helpers.normalize_constant_name(constant_name)
         violations = package.violations

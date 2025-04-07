@@ -2,27 +2,10 @@ PATH
   remote: .
   specs:
     chatwerk (0.1.0)
-      mcp-rb (~> 0.4)
+      mcp-rb (~> 0.3)
       query_packwerk (~> 0.1)
       sorbet-runtime
       thor (~> 1.2)
-
-PATH
-  remote: /Users/martin.emde/workspace/github.com/rubyatscale/query_packwerk
-  specs:
-    query_packwerk (0.1.0)
-      coderay
-      packwerk
-      parse_packwerk
-      rubocop
-      sorbet-runtime
-      thor
-
-PATH
-  remote: /Users/martin.emde/workspace/mcp_investigation/mcp-base
-  specs:
-    mcp-rb (0.4.0)
-      addressable (~> 2.8.0)
 
 GEM
   remote: https://rubygems.org/
@@ -46,8 +29,6 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.3)
     base64 (0.2.0)
     benchmark (0.4.0)
@@ -83,6 +64,7 @@ GEM
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
+    mcp-rb (0.3.3)
     minitest (5.25.5)
     nokogiri (1.18.7-arm64-darwin)
       racc (~> 1.4)
@@ -113,7 +95,13 @@ GEM
     psych (5.2.3)
       date
       stringio
-    public_suffix (6.0.1)
+    query_packwerk (0.1.0)
+      coderay
+      packwerk
+      parse_packwerk
+      rubocop
+      sorbet-runtime
+      thor
     racc (1.8.1)
     rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
@@ -186,8 +174,6 @@ PLATFORMS
 DEPENDENCIES
   chatwerk!
   irb
-  mcp-rb!
-  query_packwerk!
   rake (~> 13.0)
   rspec (~> 3.0)
   rubocop (~> 1.21)

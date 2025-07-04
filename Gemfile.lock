@@ -5,7 +5,8 @@ PATH
       mcp (~> 0.1)
       query_packwerk (~> 0.1)
       sorbet-runtime
-      thor (~> 1.2)
+      thor
+      zeitwerk
 
 GEM
   remote: https://rubygems.org/

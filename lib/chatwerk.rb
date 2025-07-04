@@ -1,21 +1,16 @@
 # typed: strict
 # frozen_string_literal: true
 
+require 'zeitwerk'
 require 'query_packwerk'
 require 'sorbet-runtime'
+require 'chatwerk/version'
+
+loader = Zeitwerk::Loader.for_gem
+loader.setup
 
 # Chatwerk provides integration between QueryPackwerk and AI tools
 # via the Model Context Protocol (MCP) server.
 module Chatwerk
-  extend T::Sig
-
-  autoload :API, 'chatwerk/api'
-  autoload :CLI, 'chatwerk/cli'
-  autoload :Error, 'chatwerk/error'
-  autoload :Helpers, 'chatwerk/helpers'
-  autoload :Mcp, 'chatwerk/mcp'
-  autoload :Views, 'chatwerk/views'
-  autoload :VERSION, 'chatwerk/version'
-
   class NotFoundError < Error; end
 end

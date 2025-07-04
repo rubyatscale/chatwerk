@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Chatwerk
   module Views
     class BaseView

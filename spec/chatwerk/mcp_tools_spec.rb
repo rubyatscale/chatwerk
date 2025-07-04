@@ -7,7 +7,24 @@ require 'chatwerk/mcp'
 RSpec.describe 'MCP Tools' do
   let(:server_context) { double('server_context') }
 
-  describe Chatwerk::PrintEnvTool do
+  describe Chatwerk::Mcp do
+    it 'creates server with all tool classes available' do
+      server = described_class.server
+
+      expect(server).to be_a(MCP::Server)
+      expect(server.name).to eq('chatwerk')
+      expect(server.version).to eq(Chatwerk::VERSION)
+
+      # Verify all tool classes are available
+      expect(Chatwerk::Tools::PrintEnvTool).to be_a(Class)
+      expect(Chatwerk::Tools::PackagesTool).to be_a(Class)
+      expect(Chatwerk::Tools::PackageTool).to be_a(Class)
+      expect(Chatwerk::Tools::PackageTodosTool).to be_a(Class)
+      expect(Chatwerk::Tools::PackageViolationsTool).to be_a(Class)
+    end
+  end
+
+  describe Chatwerk::Tools::PrintEnvTool do
     it 'responds with environment information' do
       response = described_class.call(server_context: server_context)
 
@@ -28,9 +45,9 @@ RSpec.describe 'MCP Tools' do
     end
   end
 
-  describe Chatwerk::PackagesTool do
+  describe Chatwerk::Tools::PackagesTool do
     it 'responds with package list when no package_path provided' do
-      allow(Chatwerk::API).to receive(:packages).with(package_path: nil).and_return('package list')
+      allow(Chatwerk::Api).to receive(:packages).with(package_path: nil).and_return('package list')
 
       response = described_class.call(server_context: server_context)
 
@@ -39,7 +56,7 @@ RSpec.describe 'MCP Tools' do
     end
 
     it 'responds with filtered packages when package_path provided' do
-      allow(Chatwerk::API).to receive(:packages).with(package_path: 'packs/payments').and_return('filtered packages')
+      allow(Chatwerk::Api).to receive(:packages).with(package_path: 'packs/payments').and_return('filtered packages')
 
       response = described_class.call(package_path: 'packs/payments', server_context: server_context)
 
@@ -57,9 +74,9 @@ RSpec.describe 'MCP Tools' do
     end
   end
 
-  describe Chatwerk::PackageTool do
+  describe Chatwerk::Tools::PackageTool do
     it 'responds with package details' do
-      allow(Chatwerk::API).to receive(:package).with(package_path: 'packs/payments').and_return('package details')
+      allow(Chatwerk::Api).to receive(:package).with(package_path: 'packs/payments').and_return('package details')
 
       response = described_class.call(package_path: 'packs/payments', server_context: server_context)
 
@@ -78,9 +95,9 @@ RSpec.describe 'MCP Tools' do
     end
   end
 
-  describe Chatwerk::PackageTodosTool do
+  describe Chatwerk::Tools::PackageTodosTool do
     it 'responds with todos list when no constant_name provided' do
-      allow(Chatwerk::API).to receive(:package_todos)
+      allow(Chatwerk::Api).to receive(:package_todos)
         .with(package_path: 'packs/payments', constant_name: nil)
         .and_return('todos list')
 
@@ -91,7 +108,7 @@ RSpec.describe 'MCP Tools' do
     end
 
     it 'responds with detailed todos when constant_name provided' do
-      allow(Chatwerk::API).to receive(:package_todos)
+      allow(Chatwerk::Api).to receive(:package_todos)
         .with(package_path: 'packs/payments', constant_name: '::OtherPackage::SomeClass')
         .and_return('detailed todos')
 
@@ -117,9 +134,9 @@ RSpec.describe 'MCP Tools' do
     end
   end
 
-  describe Chatwerk::PackageViolationsTool do
+  describe Chatwerk::Tools::PackageViolationsTool do
     it 'responds with violations list when no constant_name provided' do
-      allow(Chatwerk::API).to receive(:package_violations)
+      allow(Chatwerk::Api).to receive(:package_violations)
         .with(package_path: 'packs/payments', constant_name: nil)
         .and_return('violations list')
 
@@ -130,7 +147,7 @@ RSpec.describe 'MCP Tools' do
     end
 
     it 'responds with detailed violations when constant_name provided' do
-      allow(Chatwerk::API).to receive(:package_violations)
+      allow(Chatwerk::Api).to receive(:package_violations)
         .with(package_path: 'packs/payments', constant_name: '::ThisPackage::SomeClass')
         .and_return('detailed violations')
 

@@ -1,4 +1,4 @@
-require_relative 'base_view'
+# frozen_string_literal: true
 
 module Chatwerk
   module Views

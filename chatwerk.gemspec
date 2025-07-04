@@ -36,5 +36,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'mcp', '~> 0.1'
   spec.add_dependency 'query_packwerk', '~> 0.1'
   spec.add_dependency 'sorbet-runtime'
-  spec.add_dependency 'thor', '~> 1.2'
+  spec.add_dependency 'thor'
+  spec.add_dependency 'zeitwerk'
 end

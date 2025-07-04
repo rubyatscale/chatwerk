@@ -2,10 +2,9 @@
 # frozen_string_literal: true
 
 require 'yaml'
-require_relative 'views'
 
 module Chatwerk
-  module API
+  module Api
     class << self
       def print_env
         msg = <<~MESSAGE

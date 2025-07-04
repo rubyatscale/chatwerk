@@ -3,7 +3,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Chatwerk::API do
+RSpec.describe Chatwerk::Api do
   let(:pwd) { '/test/workspace' }
   let(:package_path) { 'packs/test_package' }
   let(:constant_name) { '::TestPackage::TestClass' }

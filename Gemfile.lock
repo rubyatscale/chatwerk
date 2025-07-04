@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     chatwerk (0.1.0)
-      mcp-rb (~> 0.3)
+      mcp (~> 0.1)
       query_packwerk (~> 0.1)
       sorbet-runtime
       thor (~> 1.2)
@@ -58,13 +58,15 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.10.2)
+    json_rpc_handler (0.1.1)
     language_server-protocol (3.17.0.4)
     lint_roller (1.1.0)
     logger (1.7.0)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    mcp-rb (0.3.3)
+    mcp (0.1.0)
+      json_rpc_handler (~> 0.1)
     minitest (5.25.5)
     nokogiri (1.18.7-arm64-darwin)
       racc (~> 1.4)

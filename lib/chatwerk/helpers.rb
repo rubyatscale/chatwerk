@@ -6,12 +6,14 @@ module Chatwerk
     module_function :chdir
 
     def env_pwd
-      ENV.fetch('PWD', pwd)
+      path = ENV.fetch('PWD', pwd)
+      # Use realpath if the path exists, otherwise fall back to expand_path
+      File.directory?(path) ? File.realpath(path) : File.expand_path(path)
     end
     module_function :env_pwd
 
     def pwd
-      Dir.pwd
+      File.realpath(Dir.pwd)
     end
     module_function :pwd
 

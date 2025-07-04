@@ -7,6 +7,18 @@ require_relative 'views'
 module Chatwerk
   module API
     class << self
+      def print_env
+        msg = <<~MESSAGE
+          PWD: #{Dir.pwd}
+          PWD from ENV: #{ENV.fetch('PWD', nil)}
+        MESSAGE
+        Helpers.chdir do
+          msg << "Chdir'd to #{Helpers.pwd}\n"
+        end
+        msg << ENV.to_h.map { |key, value| "#{key}=#{value}" }.join("\n")
+        msg
+      end
+
       def packages(package_path: '')
         packages = Helpers.all_packages(package_path)
 

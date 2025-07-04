@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'mcp-rb', '~> 0.3'
+  spec.add_dependency 'mcp', '~> 0.1'
   spec.add_dependency 'query_packwerk', '~> 0.1'
   spec.add_dependency 'sorbet-runtime'
   spec.add_dependency 'thor', '~> 1.2'

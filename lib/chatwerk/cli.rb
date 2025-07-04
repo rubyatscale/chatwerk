@@ -3,16 +3,18 @@
 
 require 'thor'
 require 'chatwerk'
-require 'chatwerk/mcp'
 require 'chatwerk/api'
-require 'mcp'
 
 module Chatwerk
   # CLI interface for Chatwerk using Thor
   class CLI < Thor
     desc 'mcp', 'Start the Model Context Protocol server in stdio mode'
     def mcp
-      MCP::Server.new(Chatwerk::Mcp.new).serve(MCP::Server::StdioClientConnection.new)
+      require_relative 'mcp'
+      require 'mcp/server/transports/stdio_transport'
+      server = Chatwerk::Mcp.server
+      transport = MCP::Server::Transports::StdioTransport.new(server)
+      transport.open
     end
 
     desc 'inspect [WORKING_DIRECTORY]', 'Run the MCP inspector with an optional working directory path (defaults to current directory)'
@@ -28,22 +30,22 @@ module Chatwerk
 
     desc 'packages [PACKAGE_PATH]', 'List all valid packwerk packages, optionally filtered by package path'
     def packages(package_path = nil)
-      puts API.packages(package_path)
+      puts API.packages(package_path:)
     end
 
     desc 'package PACKAGE_PATH', 'Show details for a specific package'
     def package(package_path)
-      puts API.package(package_path)
+      puts API.package(package_path:)
     end
 
     desc 'package_todos PACKAGE_PATH [CONSTANT_NAME]', 'Show dependency violations FROM this package TO others'
     def package_todos(package_path, constant_name = nil)
-      puts API.package_todos(package_path, constant_name)
+      puts API.package_todos(package_path:, constant_name:)
     end
 
     desc 'package_violations PACKAGE_PATH [CONSTANT_NAME]', 'Show dependency violations TO this package FROM others'
     def package_violations(package_path, constant_name = nil)
-      puts API.package_violations(package_path, constant_name)
+      puts API.package_violations(package_path:, constant_name:)
     end
 
     desc 'version', 'Display Chatwerk version'

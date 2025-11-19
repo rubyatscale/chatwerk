@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Chatwerk
   module Views
     autoload :NoPackagesView, 'chatwerk/views/no_packages_view'

@@ -1,8 +1,4 @@
-# typed: false
 # frozen_string_literal: true
-
-require 'spec_helper'
-require 'chatwerk/mcp'
 
 RSpec.describe 'MCP Tools' do
   let(:server_context) { double('server_context') }

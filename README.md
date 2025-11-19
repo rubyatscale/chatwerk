@@ -2,6 +2,9 @@
 
 Chatwerk provides AI tool integration for the [QueryPackwerk](https://github.com/rubyatscale/query_packwerk) gem. It adds a Model Context Protocol (MCP) server that allows AI tools like Cursor IDE to access information about your Packwerk packages, dependencies, and violations.
 
+> [!NOTE]
+> This is an early prerelease version. We'll continue to update it as we develop. Contributions and feedback are welcome!
+
 ## Installation
 
 Install the gem, either add in to your packwerk'd application's Gemfile:

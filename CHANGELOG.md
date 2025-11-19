@@ -1,5 +1,1 @@
-## [Unreleased]
-
-## [0.1.0] - 2025-03-23
-
-- Initial release
+See https://github.com/rubyatscale/chatwerk/releases

@@ -3,4 +3,4 @@
 
 require 'chatwerk'
 
-Chatwerk::CLI.start(ARGV)
+Chatwerk::Cli.start(ARGV)

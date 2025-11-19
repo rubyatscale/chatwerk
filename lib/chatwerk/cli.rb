@@ -5,7 +5,7 @@ require 'thor'
 
 module Chatwerk
   # CLI interface for Chatwerk using Thor
-  class CLI < Thor
+  class Cli < Thor
     desc 'mcp', 'Start the Model Context Protocol server in stdio mode'
     def mcp
       require_relative 'mcp'

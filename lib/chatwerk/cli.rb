@@ -9,9 +9,9 @@ module Chatwerk
     desc 'mcp', 'Start the Model Context Protocol server in stdio mode'
     def mcp
       require_relative 'mcp'
-      require 'mcp/server/transports/stdio_transport'
+      require 'mcp/transports/stdio'
       server = Chatwerk::Mcp.server
-      transport = MCP::Server::Transports::StdioTransport.new(server)
+      transport = MCP::Transports::StdioTransport.new(server)
       transport.open
     end
 

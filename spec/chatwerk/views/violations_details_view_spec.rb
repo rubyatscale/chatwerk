@@ -1,4 +1,4 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
 RSpec.describe Chatwerk::Views::ViolationsDetailsView do
   context 'with violations having source locations' do

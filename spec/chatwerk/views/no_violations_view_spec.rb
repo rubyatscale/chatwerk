@@ -1,4 +1,4 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
 RSpec.describe Chatwerk::Views::NoViolationsView do
   it 'renders a message indicating no violations found' do

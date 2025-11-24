@@ -1,4 +1,4 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
 RSpec.describe Chatwerk::Views::PackageView do
   context 'with a valid package' do

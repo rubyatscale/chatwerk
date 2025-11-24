@@ -1,7 +1,4 @@
-# typed: false
 # frozen_string_literal: true
-
-require 'spec_helper'
 
 RSpec.describe Chatwerk::Api do
   let(:pwd) { '/test/workspace' }

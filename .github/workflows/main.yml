@@ -16,7 +16,7 @@ jobs:
         ruby:
           - '3.4'
           - '3.3'
-          - '3.2'
+          - '3.2' # EOL: 2026-03-31 (expected)
 
     steps:
       - uses: actions/checkout@v4

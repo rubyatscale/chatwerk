@@ -1,4 +1,4 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
 RSpec.describe Chatwerk::Error do
   context 'with a Chatwerk::Error' do

@@ -7,14 +7,16 @@ Chatwerk provides AI tool integration for the [QueryPackwerk](https://github.com
 
 ## Installation
 
-Install the gem, either add in to your packwerk'd application's Gemfile:
+Install the gem. 
+
+Either add it to your packwerk'd application's Gemfile:
 
 ```ruby
 $ bundle add chatwerk
 $ bundle install
 ```
 
-or install it on its own:
+Or, install it on its own:
 
 ```bash
 $ gem install chatwerk

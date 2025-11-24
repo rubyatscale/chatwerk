@@ -1,4 +1,4 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
 RSpec.describe Chatwerk::Views::NoPackagesView do
   context 'when packwerk.yml exists' do

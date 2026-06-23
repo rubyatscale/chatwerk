@@ -66,7 +66,7 @@ RSpec.describe 'MCP Tools' do
     it 'has package_path as optional argument' do
       schema = described_class.input_schema
       expect(schema.to_h[:properties]).to have_key(:package_path)
-      expect(schema.to_h[:required]).to satisfy { |r| r.nil? || !r.include?('package_path') }
+      expect(schema.to_h[:required]).to(satisfy { |r| r.nil? || !r.include?('package_path') })
     end
   end
 

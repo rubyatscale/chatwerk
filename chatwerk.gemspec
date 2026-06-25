@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'MCP server and API for integrating Packwerk with AI tools like Cursor.'
   spec.homepage = 'https://github.com/rubyatscale/chatwerk'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 3.1.0'
+  spec.required_ruby_version = '>= 3.3'
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
 

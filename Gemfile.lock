@@ -68,7 +68,9 @@ GEM
       nokogiri (>= 1.12.0)
     mcp (0.1.0)
       json_rpc_handler (~> 0.1)
-    minitest (5.25.5)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
     nokogiri (1.19.3-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.19.3-aarch64-linux-musl)
@@ -102,7 +104,7 @@ GEM
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
-    prism (1.4.0)
+    prism (1.9.0)
     psych (5.2.3)
       date
       stringio
@@ -176,7 +178,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
-    unicode-emoji (4.0.4)
+    unicode-emoji (4.2.0)
     uri (1.0.3)
     zeitwerk (2.7.2)
 
@@ -202,4 +204,4 @@ DEPENDENCIES
   sorbet (~> 0.5)
 
 BUNDLED WITH
-   2.6.6
+  4.0.15

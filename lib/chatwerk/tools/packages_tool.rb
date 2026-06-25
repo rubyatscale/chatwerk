@@ -17,8 +17,7 @@ module Chatwerk
             type: 'string',
             description: "A partial package path name to constrain the results (e.g. 'packs/product_services/payments/banks' or 'payments/banks')."
           }
-        },
-        required: []
+        }
       )
 
       class << self

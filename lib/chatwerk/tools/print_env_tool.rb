@@ -10,8 +10,7 @@ module Chatwerk
       description 'Get the current working directory and environment path of the MCP server, ensuring correct directory context'
 
       input_schema(
-        properties: {},
-        required: []
+        properties: {}
       )
 
       class << self

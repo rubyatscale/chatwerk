@@ -37,7 +37,7 @@ RSpec.describe 'MCP Tools' do
 
     it 'has no required arguments' do
       schema = described_class.input_schema
-      expect(schema.required).to be_empty
+      expect(schema.to_h.fetch(:required, [])).to be_empty
     end
   end
 
@@ -65,8 +65,8 @@ RSpec.describe 'MCP Tools' do
 
     it 'has package_path as optional argument' do
       schema = described_class.input_schema
-      expect(schema.properties).to have_key(:package_path)
-      expect(schema.required).not_to include(:package_path)
+      expect(schema.to_h[:properties]).to have_key(:package_path)
+      expect(schema.to_h.fetch(:required, [])).not_to include('package_path')
     end
   end
 
@@ -86,8 +86,8 @@ RSpec.describe 'MCP Tools' do
 
     it 'has package_path as required argument' do
       schema = described_class.input_schema
-      expect(schema.properties).to have_key(:package_path)
-      expect(schema.required).to include(:package_path)
+      expect(schema.to_h[:properties]).to have_key(:package_path)
+      expect(schema.to_h.fetch(:required, [])).to include('package_path')
     end
   end
 
@@ -123,10 +123,10 @@ RSpec.describe 'MCP Tools' do
 
     it 'has correct argument requirements' do
       schema = described_class.input_schema
-      expect(schema.properties).to have_key(:package_path)
-      expect(schema.properties).to have_key(:constant_name)
-      expect(schema.required).to include(:package_path)
-      expect(schema.required).not_to include(:constant_name)
+      expect(schema.to_h[:properties]).to have_key(:package_path)
+      expect(schema.to_h[:properties]).to have_key(:constant_name)
+      expect(schema.to_h.fetch(:required, [])).to include('package_path')
+      expect(schema.to_h.fetch(:required, [])).not_to include('constant_name')
     end
   end
 
@@ -162,10 +162,10 @@ RSpec.describe 'MCP Tools' do
 
     it 'has correct argument requirements' do
       schema = described_class.input_schema
-      expect(schema.properties).to have_key(:package_path)
-      expect(schema.properties).to have_key(:constant_name)
-      expect(schema.required).to include(:package_path)
-      expect(schema.required).not_to include(:constant_name)
+      expect(schema.to_h[:properties]).to have_key(:package_path)
+      expect(schema.to_h[:properties]).to have_key(:constant_name)
+      expect(schema.to_h.fetch(:required, [])).to include('package_path')
+      expect(schema.to_h.fetch(:required, [])).not_to include('constant_name')
     end
   end
 end

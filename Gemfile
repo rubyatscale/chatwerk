@@ -6,11 +6,11 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'irb'
-gem 'rake', '~> 13.0'
+gem 'rake', '~> 13.4'
 
-gem 'rspec', '~> 3.0'
+gem 'rspec', '~> 3.13'
 
-gem 'rubocop', '~> 1.21'
+gem 'rubocop', '~> 1.88'
 gem 'rubocop-performance'
 gem 'rubocop-sorbet'
-gem 'sorbet', '~> 0.5'
+gem 'sorbet', '~> 0.6'

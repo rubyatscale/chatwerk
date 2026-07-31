@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     chatwerk (0.1.0)
-      mcp (>= 0.1, < 2.0)
+      mcp
       query_packwerk (~> 0.1)
       sorbet-runtime
       thor

@@ -17,7 +17,7 @@ module Chatwerk
     desc 'inspect [WORKING_DIRECTORY]', 'Run the MCP inspector with an optional working directory path (defaults to current directory)'
     def inspect(working_directory = nil)
       pwd = working_directory || Dir.pwd
-      system("npx @modelcontextprotocol/inspector -e PWD=#{pwd} bundle exec exe/chatwerk mcp")
+      system('npx', '@modelcontextprotocol/inspector', '-e', "PWD=#{pwd}", 'bundle', 'exec', 'exe/chatwerk', 'mcp')
     end
 
     desc 'print_env', 'Show current environment details'
